@@ -5,7 +5,7 @@
 <title>无标题文档</title>
 <style type="text/css">
 body{font-family:"微软雅黑";}
-#parent1,#parent2,#parent3,#parent4{ position:relative; width:520px; height:50px; background:#ccc; margin-bottom:20px;}
+#parent1,#parent2,#parent3,#parent4{ position:relative; width:520px; height:50px; background:#ccc; margin-bottom:20px; }
 #div1,#div2,#div3,#div4{ position:absolute; width:20px; height:50px; background:#99e;}
 #div5{position:absolute; width:300px; height:300px;background:#000;}
 label{margin-left: 525px;}
@@ -14,6 +14,7 @@ label{margin-left: 525px;}
 </head>
 
 <body>
+	<h3>huanglw学习笔记---js实现调色按钮的组件</h3>
 	<div id="parent1">	   
 	   <div id="div1"></div>
 	   <label id="div1_info">R:0</label>
@@ -31,7 +32,7 @@ label{margin-left: 525px;}
 	
 	<div id="parent4">
 	   <div id="div4"></div>
-	   <label id="div4_info">opacity:0</label>
+	   <label id="div4_info">opacity:1(default)</label>
 	</div>
 	
 	<div id="div5"></div>
@@ -52,7 +53,7 @@ window.onload=function(ev){
         //初始化鼠标点击位置,鼠标移动多少对应dom元素就对应移动多少
         var disX=0;   
         var disY=0;
- oDiv1.onmousedown=function(ev){ 
+    oDiv1.onmousedown=function(ev){ 
      var oEvent=ev||event;
 		//获取鼠标相对于被移动元素的父元素的位置
          disX=oEvent.clientX-oDiv1.offsetLeft;  //获取鼠标点击位置,clientX鼠标相对于可视区域左上角的x坐标
@@ -91,6 +92,134 @@ window.onload=function(ev){
 				  //alert(R);
 				  oDiv5.style.background = "rgb("+R+","+G+","+B+")";
 				  document.getElementById("div1_info").innerHTML="R:"+R;
+                }
+         return false;   //解决低版本火狐拖拽空div时的bug
+         }
+		 
+	oDiv2.onmousedown=function(ev){ 
+     var oEvent=ev||event;
+		//获取鼠标相对于被移动元素的父元素的位置
+         disX=oEvent.clientX-oDiv2.offsetLeft;  //获取鼠标点击位置,clientX鼠标相对于可视区域左上角的x坐标
+         disY=oEvent.clientY-oDiv2.offsetTop;   //clientY鼠标相对于可视区域左上角的Y坐标
+         document.onmousemove=function(ev){
+                 var oEvent=ev||event;
+                //定位div位置
+                 var l=oEvent.clientX-disX;   //oEvent.clientX是div在x方向上被移动的距离
+                 var t=oEvent.clientY-disY;
+                //控制div不超出可视窗口范围
+                 if(l<0){//
+                         l=0;
+                         }
+                 else if(l>oParent2.offsetWidth-oDiv2.offsetWidth){//如果向右移动的距离比父子元素宽度差还大表示向右越界了
+                         
+                         l=oParent2.offsetWidth-oDiv2.offsetWidth;
+                         }
+                if(t<0){
+                        t=0;
+                        }
+                else if(t>oParent2.offsetHeight-oDiv2.offsetHeight){
+                        
+                        t=oParent2.offsetHeight-oDiv2.offsetHeight;
+                        }
+                //css对div定位
+                 oDiv2.style.left=l+'px';
+                 oDiv2.style.top=t+'px';
+                 }
+          document.onmouseup=function(){
+                //鼠标弹起时释放onmousemove和onmouseup事件
+                  document.onmousemove=null;
+                  document.onmouseup=null;
+				  len = oDiv2.offsetLeft;//获取相对父元素移动的距离
+				  percent = len/500;
+				  G = parseInt(percent*255);
+				  //alert(G);
+				  oDiv5.style.background = "rgb("+R+","+G+","+B+")";
+				  document.getElementById("div2_info").innerHTML="G:"+G;
+                }
+         return false;   //解决低版本火狐拖拽空div时的bug
+         }
+		 
+    oDiv3.onmousedown=function(ev){ 
+     var oEvent=ev||event;
+		//获取鼠标相对于被移动元素的父元素的位置
+         disX=oEvent.clientX-oDiv3.offsetLeft;  //获取鼠标点击位置,clientX鼠标相对于可视区域左上角的x坐标
+         disY=oEvent.clientY-oDiv3.offsetTop;   //clientY鼠标相对于可视区域左上角的Y坐标
+         document.onmousemove=function(ev){
+                 var oEvent=ev||event;
+                //定位div位置
+                 var l=oEvent.clientX-disX;   //oEvent.clientX是div在x方向上被移动的距离
+                 var t=oEvent.clientY-disY;
+                //控制div不超出可视窗口范围
+                 if(l<0){//
+                         l=0;
+                         }
+                 else if(l>oParent3.offsetWidth-oDiv3.offsetWidth){//如果向右移动的距离比父子元素宽度差还大表示向右越界了
+                         
+                         l=oParent3.offsetWidth-oDiv3.offsetWidth;
+                         }
+                if(t<0){
+                        t=0;
+                        }
+                else if(t>oParent3.offsetHeight-oDiv3.offsetHeight){
+                        
+                        t=oParent3.offsetHeight-oDiv3.offsetHeight;
+                        }
+                //css对div定位
+                 oDiv3.style.left=l+'px';
+                 oDiv3.style.top=t+'px';
+                 }
+          document.onmouseup=function(){
+                //鼠标弹起时释放onmousemove和onmouseup事件
+                  document.onmousemove=null;
+                  document.onmouseup=null;
+				  len = oDiv3.offsetLeft;//获取相对父元素移动的距离
+				  percent = len/500;
+				  B = parseInt(percent*255);
+				  //alert(B);
+				  oDiv5.style.background = "rgb("+R+","+G+","+B+")";
+				  document.getElementById("div3_info").innerHTML="B:"+B;
+                }
+         return false;   //解决低版本火狐拖拽空div时的bug
+         }
+		 
+	oDiv4.onmousedown=function(ev){ 
+     var oEvent=ev||event;
+		//获取鼠标相对于被移动元素的父元素的位置
+         disX=oEvent.clientX-oDiv4.offsetLeft;  //获取鼠标点击位置,clientX鼠标相对于可视区域左上角的x坐标
+         disY=oEvent.clientY-oDiv4.offsetTop;   //clientY鼠标相对于可视区域左上角的Y坐标
+         document.onmousemove=function(ev){
+                 var oEvent=ev||event;
+                //定位div位置
+                 var l=oEvent.clientX-disX;   //oEvent.clientX是div在x方向上被移动的距离
+                 var t=oEvent.clientY-disY;
+                //控制div不超出可视窗口范围
+                 if(l<0){//
+                         l=0;
+                         }
+                 else if(l>oParent4.offsetWidth-oDiv4.offsetWidth){//如果向右移动的距离比父子元素宽度差还大表示向右越界了
+                         
+                         l=oParent4.offsetWidth-oDiv4.offsetWidth;
+                         }
+                if(t<0){
+                        t=0;
+                        }
+                else if(t>oParent4.offsetHeight-oDiv4.offsetHeight){
+                        
+                        t=oParent4.offsetHeight-oDiv4.offsetHeight;
+                        }
+                //css对div定位
+                 oDiv4.style.left=l+'px';
+                 oDiv4.style.top=t+'px';
+                 }
+          document.onmouseup=function(){
+                //鼠标弹起时释放onmousemove和onmouseup事件
+                  document.onmousemove=null;
+                  document.onmouseup=null;
+				  len = oDiv4.offsetLeft;//获取相对父元素移动的距离
+				  percent = len/500;
+				  oDiv5.style.opacity = percent;
+				  //oDiv5.style.background = "rgb("+R+","+G+","+B+")";
+				  document.getElementById("div4_info").innerHTML="A:"+percent;
                 }
          return false;   //解决低版本火狐拖拽空div时的bug
          }
